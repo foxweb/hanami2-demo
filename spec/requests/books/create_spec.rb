@@ -1,19 +1,24 @@
-# frozen_string_literal: true
-
 RSpec.describe 'POST /books', type: %i[request database] do
   let(:request_headers) do
-    { 'HTTP_ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    { 'HTTP_ACCEPT'  => 'application/json',
+      'CONTENT_TYPE' => 'application/json' }
   end
 
   context 'given valid params' do
     let(:params) do
-      { book: { title: 'Practical Object-Oriented Design in Ruby', author: 'Sandi Metz' } }
+      {
+        book: {
+          title:  'Practical Object-Oriented Design in Ruby',
+          author: 'Sandi Metz'
+        }
+      }
     end
 
     it 'creates a book' do
       post '/books', params.to_json, request_headers
 
       expect(last_response).to be_created
+      expect(content_type).to eq(content_type_json)
     end
   end
 
@@ -26,6 +31,7 @@ RSpec.describe 'POST /books', type: %i[request database] do
       post '/books', params.to_json, request_headers
 
       expect(last_response).to be_unprocessable
+      expect(content_type).to eq(content_type_json)
     end
   end
 end

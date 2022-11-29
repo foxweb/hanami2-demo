@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Bookshelf
   module Actions
     module Books
@@ -14,17 +12,13 @@ module Bookshelf
         end
 
         def handle(request, response)
-          puts request.params.inspect
-          puts request.params.errors.to_h
-
           if request.params.valid?
-            book = rom.relations[:books].changeset(:create, request.params[:book]).commit
+            book = rom.relations[:books].changeset(:create,
+                                                   request.params[:book]).commit
 
-            response.status = 201
-            response.body = book.to_json
+            render_created(book, response)
           else
-            response.status = 422
-            response.body = request.params.errors.to_json
+            render_errors(request.params.errors)
           end
         end
       end

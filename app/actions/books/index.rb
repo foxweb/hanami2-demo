@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Bookshelf
   module Actions
     module Books
@@ -11,15 +9,18 @@ module Bookshelf
           optional(:per_page).value(:integer, gt?: 0, lteq?: 100)
         end
 
-        def handle(request, response)
-          halt 422, { errors: request.params.errors }.to_json unless request.params.valid?
+        def handle(request, response) # rubocop:disable Metrics/AbcSize
+          unless request.params.valid?
+            halt 422,
+                 { errors: request.params.errors }.to_json
+          end
 
           books = rom.relations[:books]
-                     .select(:title, :author)
-                     .order(:title)
-                     .page(request.params[:page] || 1)
-                     .per_page(request.params[:per_page] || 5)
-                     .to_a
+                    .select(:title, :author)
+                    .order(:title)
+                    .page(request.params[:page] || 1)
+                    .per_page(request.params[:per_page] || 5)
+                    .to_a
 
           response.body = books.to_json
         end

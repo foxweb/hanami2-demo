@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe 'GET /books/:id', type: %i[request database] do
   let(:books) { app['persistence.rom'].relations[:books] }
 
@@ -12,12 +10,11 @@ RSpec.describe 'GET /books/:id', type: %i[request database] do
       get "/books/#{book_id}"
 
       expect(last_response).to be_successful
-      expect(last_response.content_type).to eq('application/json; charset=utf-8')
-
-      response_body = JSON.parse(last_response.body)
-
+      expect(content_type).to eq(content_type_json)
       expect(response_body).to eq(
-        'id' => book_id, 'title' => 'Test Driven Development', 'author' => 'Kent Beck'
+        id:     book_id,
+        title:  'Test Driven Development',
+        author: 'Kent Beck'
       )
     end
   end
@@ -27,13 +24,8 @@ RSpec.describe 'GET /books/:id', type: %i[request database] do
       get "/books/#{books.max(:id).to_i + 1}"
 
       expect(last_response).to be_not_found
-      expect(last_response.content_type).to eq('application/json; charset=utf-8')
-
-      response_body = JSON.parse(last_response.body)
-
-      expect(response_body).to eq(
-        'error' => 'not_found'
-      )
+      expect(content_type).to eq(content_type_json)
+      expect(response_body).to eq(error: 'not_found')
     end
   end
 end

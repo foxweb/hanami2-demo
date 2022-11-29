@@ -1,6 +1,5 @@
-# frozen_string_literal: true
-
 require 'hanami'
+require 'oj_parser'
 
 module Bookshelf
   class App < Hanami::App
