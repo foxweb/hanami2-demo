@@ -6,8 +6,4 @@ class OjParser
   def parse(body)
     Oj.load(body) unless body.empty?
   end
-
-  def empty?
-    false
-  end
 end
