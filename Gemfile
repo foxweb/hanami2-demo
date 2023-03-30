@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.1.2'
+ruby '3.2.1'
 
 gem 'hanami', '~> 2.0'
 gem 'hanami-controller', '~> 2.0'
